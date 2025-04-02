@@ -12,7 +12,7 @@ namespace algo {
 
 class DFS {
   public:
-    static int* buildDFSTree(const Graph& g, int source);
+        static graph::Graph buildDFSTree(const graph::Graph& g, int source);
 
    };
 

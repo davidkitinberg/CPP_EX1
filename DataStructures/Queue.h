@@ -10,7 +10,7 @@
 namespace ds {
 
 class Queue {
-  int *array; // Array for storing the queue elements
+  int *array;
   int capacity;
   int front;
   int rear;

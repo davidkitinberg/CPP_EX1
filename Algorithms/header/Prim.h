@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #ifndef PRIM_H
 #define PRIM_H
 
@@ -12,6 +13,6 @@ public:
     static graph::Graph buildMST(const graph::Graph& g, int startVertex = 0);
 };
 
-} // namespace algo
+}
 
-#endif // PRIM_H
+#endif 

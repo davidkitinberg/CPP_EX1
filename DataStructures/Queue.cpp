@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #include <iostream>
 #include "Queue.h"
 
@@ -9,11 +10,12 @@ namespace ds {
 
 // Constructor
 Queue::Queue(int size) {
-    if (size <= 0) {
-        cerr << "Invalid queue size!" << endl;
-        exit(1);
-    }
+  
     // Ititalization is done only after we check whether or not the size given is valid (to prevent mem leak)
+    if (size <= 0) {
+      throw std::runtime_error("Invalid priority queue size!");
+    }
+
     capacity = size + 1;
     array = new int[capacity];
     front = 0;

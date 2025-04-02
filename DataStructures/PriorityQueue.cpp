@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #include "PriorityQueue.h"
 #include <iostream>
 #include <climits>
@@ -8,6 +9,12 @@ namespace ds {
 
     // Constructor: initializes the priority queue with the given capacity.
     PriorityQueue::PriorityQueue(int cap) : capacity(cap), size(0) {
+
+        // Ititalization is done only after we check whether or not the size given is valid (to prevent mem leak)
+        if (cap <= 0) {
+            throw std::runtime_error("Invalid priority queue size!");
+        }
+        
         // Allocate arrays for the vertex list, their distances, and a flag to check if they're still in the queue.
         vertices = new int[capacity];
         distances = new int[capacity];

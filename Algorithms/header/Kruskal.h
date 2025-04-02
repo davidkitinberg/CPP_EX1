@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #ifndef KRUSKAL_H
 #define KRUSKAL_H
 
@@ -12,6 +13,6 @@ public:
     static graph::Graph buildMST(const graph::Graph& g);
 };
 
-} // namespace algo
+}
 
-#endif // KRUSKAL_H
+#endif

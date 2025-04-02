@@ -1,91 +1,110 @@
-<div dir="rtl">
+# Graph Algorithms Project in C++
 
-# מטלה מספר 1 - מימוש גרף על ידי רשימת שכנויות
-
-### יושרה אקדמית
-
-במהלך העבודה על המטלות, מותר להתייעץ עם סטודנטים אחרים ולחפש מידע באינטרנט. עם זאת, חל איסור להעתיק קטעי קוד שלמים ממקורות חיצוניים, כולל סטודנטים אחרים, אתרי אינטרנט ומודלי בינה מלאכותית (כגון ChatGPT).
-
-יש לדווח על כל עזרה שקיבלתם, בין אם מדובר בהתייעצות עם סטודנטים אחרים או במידע שנמצא באינטרנט, בהתאם ל[תקנון היושר של המחלקה](https://www.ariel.ac.il/wp/cs/wp-content/uploads/sites/88/2020/08/Guidelines-for-Academic-Integrity.pdf).
-**במקרה של שימוש בכלי בינה מלאכותית (AI), יש לצרף את הפרומפטים שהוזנו ואת התשובות שהתקבלו**.
-
------
-* **מטרת המטלה:** הבנת החומר הנלמד בהרצאות הראשונות, כגון: ניהול זיכרון ב ++C, מחלקות, בנאים, מפרקים, עצמים, מרחבי שמות, העברת פרמטרים לפונקציות, החזרת אובייקטים.
-* **שימו לב!** במטלה **אסור** להשתמש בספרייה הסטנדרטית, ניתן להשתמש במערך. **זאת אומרת תצטרכו לממש מבנה/י נתונים המתאים לצרכי המטלה**. כל המיכלים הסטנדרטיים כולל vector או stack *אינם זמינים* לכם במטלה זו.
-* **ההגשה ביחידים**.
+In this project we are asked to make an Implementation of classic graph algorithms using custom data structures — fully STL-free. The project is run only in C++ and in linux environment.
 
 ---
 
-## הוראות הגשה ב Moodle:
+## Project Structure
 
-במערכת Moodle יש להגיש **קובץ טקסט למשל (`submission.txt`)** המכיל 3 שורות בפורמט הבא:
-
-1. **תעודת זהות** – מספר תעודת הזהות של הסטודנט.
-2. **קישור להגשה** – קישור למאגר ה-GitHub שבו נמצא הפרויקט.
-3. **פרטי ה-commit האחרון** – המחרוזת המזהה של ה-commit האחרון (`commit hash`) 
-
- - דוגמה לקובץ הגשה תקין:
 ```
-123456789
-https://github.com/example-user/graph-assignment
-e3f1c1a 
+.
+├── Algorithms/
+│   ├── header/                
+│   └── src/                  
+├── DataStructures/            
+├── Graph/                    
+├── doctest.h                 
+├── Main.cpp                  
+├── Test_main.cpp             
+├── makefile                  
+└── README.md                 
+```
+In this project I divided the classes into different directories to keep organizable and modular project.
+
+-   ***Algorithms/*** - Divided into two subdirectories:
+        
+    **Algorithms/header/ :** Contains the header files for each graph algorithm (`BFS.h`, `DFS.h`, `Dijkstra.h`, `Kruskal.h`, `Prim.h`), declaring the static interfaces for the algorithms.
+
+    **Algorithms/src/ :** Contains the corresponding source files that implement each algorithm. Each file defines how the algorithm processes a graph and returns the modified graph after the algorithms.
+-   ***DataStructures/*** - Contains the custom-built data structures that are used internally by the algorithms
+-   ***Graph/*** - Contains the core Graph class implementation (`Graph.h`, `Graph.cpp`).
+
+---
+
+## Features
+
+-  **Graph** representation using adjacency lists (array with linked-lists)
+-  **BFS (Breadth-First Search)** — builds a shortest-path tree
+-  **DFS (Depth-First Search)** — builds a depth-first tree
+-  **Dijkstra’s Algorithm** — computes shortest path tree from a source
+-  **Prim’s Algorithm** — builds a minimum spanning tree (MST)
+-  **Kruskal’s Algorithm** — builds an MST using union-find
+-  **Custom Data Structures**  
+  - `Queue` — for BFS
+  - `PriorityQueue` — for Dijkstra and Prim
+  - `UnionFind` — for Kruskal
+-  **Comprehensive Unit Tests** using [doctest](https://github.com/doctest/doctest)
+-  **Memory-leak free** (compatible with Valgrind)
+
+---
+
+## Build Instructions
+
+You can build and run the project using the included `makefile`.
+
+### 1. Build and run demo (`Main.cpp`)
+```
+make Main
+```
+
+### 2. Run unit tests
+```
+make test
+```
+
+### 3. Run demo with Valgrind (memory leak check)
+```
+make valgrind
+```
+
+### 4. Clean up build artifacts
+```
+make clean
 ```
 
 ---
 
-גרפים הם חלק בלתי נפרד ממדעי המחשב. במהלך הלימודים נחשפתם לדרכים שונות לייצוג של גרפים (מטריצת שכנויות, רשימת שכנויות ועוד).
+## Testing
 
-במטלה זו תממשו גרף באמצעות **רשימת שכנויות** – [Adjacency List](https://en.wikipedia.org/wiki/Adjacency_list).
+- All test cases live in `Test_main.cpp`
+- Tests include:
+  - Graph edge creation
+  - BFS, DFS tree validation
+  - MST validation for Prim and Kruskal
+  - Dijkstra distance validation
+  - Custom queue and priority queue logic
+  - Union-find functinality
+- Uses `doctest.h` (no external installation required)
 
 ---
 
-## דרישות המטלה:
+## Notes
 
-### מימוש המחלקות הבאות:
-הוסיפו את המחלקות במרחב שמות (namespace) חדש ( קראו לו ```graph```).
+- STL (like `vector`, `set`, `map`) is **not used**
+-   The project uses 3 namespaces: `algo`, `ds`, `graph`:
 
-#### מחלקה בשם `Graph`:
-הגרף יאותחל עם מספר קודקודים מסוים ולא ניתן יהיה לשנות את מספר הקודקודים בגרף. 
-המחלקה תכיל את רשימת השכנויות וכן את הפונקציות הבאות:
+    `algo` - Contains all the graph algorithms in this project 
 
-1. פונקציה  `addEdge`  מקבלת שלושה מספרים שלמים: מקור, יעד ומשקל (ברירת המחדל למשקל היא 1). הפונקציה תוסיף צלע (לא מכוונת) לגרף.
-2. פונקציה  `removeEdge` מקבלת שני מספרים שלמים המייצגים צלע ומוחקת אותה מהגרף. אם הצלע לא קיימת, הפונקציה תזרוק חריגה.
-3. פונקציה  `print_graph` מדפיסה את הגרף בצורה כלשהי הגיונית לבחירתכם.
-4. במידת הצורך, יש להוסיף בנאים\פונקציות עזר רלונטיות למחלקה.
-
-#### מחלקה בשם `Algorithms`:
-מחלקה זו תממש אלגוריתמים שונים על גרף לא מכוון. הכי קרוב שאפשר לאלו שלמדתם בקורס אלגוריתמים 1. המחלקה תכיל את הפונקציות הבאות:
-
-1. פונקציה `bfs` – מקבלת גרף וקודקוד מקור ומחזירה גרף שהוא עץ מושרש (שהשורש הוא קודקוד המקור כמובן) שהתקבל מסריקת BFS.  
-2. פונקציה `dfs` – מקבלת גרף וקודקוד ממנו תתחיל הסריקה ומחזירה גרף (עץ או יער) המתקבל לפי סריקת DFS. (עץ זה יכיל קודקודים מקוריים ורק צלעות מסוג tree edges).
-3. פונקציה `dijkstra` – מקבלת גרף וקודקוד התחלה ומחזירה עץ ממושקל של מסלולים קצרים ביותר.
-4. פונקציה `prim` – מקבלת גרף, מחשבת את העץ הפורש המינימלי ומחזירה אותו (כלומר מחזירה גרף המייצג את העץ).
-5. פונקציה `kruskal` – כמו סעיף הקודם.
--  מכיוון ש-STL אינה זמינה במטלה זו, לצורך מימוש אלגוריתמים אלו תצטרכו לממש באופן בסיסי מבני נתונים נוספים: תור ו\או תור עדיפויות ו-union find. מימוש בסיסי אומר כי מספיק לממש מבנים אלו רק פונקציאונלית, אין דרישה מיוחדת לסיבוכיות. 
+    `ds` (short for data structures) - Contains all the costum data structures that were used in this project (e.g Queue,PriorityQueue,Union-Find)
     
+    `graph` - Contains the Graph class and it's functions
+- Project uses **manual memory management**
+- Edges are added to **both ends** in the adjacency list (undirected graph)
+- All algorithms are implemented as **static classes** for conveniet usage
+
 ---
 
-#### דרישות נוספות:
+##  Author
 
-- חשוב לוודא שה-repository ציבורי.
-- כתבו בתחילת **כל** קובץ את כתובת המייל שלכם.
-- כתבו קוד נקי, מסודר, מחולק לקבצים, מודולרי, מתועד בצורה מספקת וכמובן בדיקות יחידה עבור כל הפונקציות.
-- בדקו את תקינות הקלט ולזרוק חריגות מתאימות במידת הצורך.
-- הוסיפו קובץ עם הפומקציה הראשית `main` בו צרו הדגמה של עבודה עם המחלקות ופונקציות שיצרתם.
-- לשימושכם הקישור הבא [doctest](https://github.com/doctest/doctest) בו תוכלו לראות דוגמאות נוספות לשימוש בסיפריה זו.
-- יש לבדוק שאין זליגת זיכרון באמצעות `valgrind`.
-- יש לצרף גם קובץ `README` עם הסבר על פרויקט, על חלוקה למחלקות וקבצים וכל מידע אחר רלוונטי.
-
-
-#### קובץ `Makefile`:
-הוסיפו לפרויקט קובץ `Makefile` הכולל את הפקודות הבאות:
-- הפקודה `make Main` – להרצת קובץ ההדגמה.
-- הפקודה `make test` – להרצת בדיקות היחידה.
-- הפקודה `make valgrind` – בדיקת זליגת זיכרון באמצעות valgrind.
-- הפקודה `make clean` - מוחקת את כל הקבצים הלא רלוונטיים לאחר ההרצה.
-
-
-בהצלחה!
-
-</div>
-
+**David Kitinberg**  
+-   For any questions about this project you are welcome to contact me through my email: davidkitinberg@gmail.com

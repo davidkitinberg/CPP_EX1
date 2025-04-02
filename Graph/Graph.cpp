@@ -1,9 +1,9 @@
 // davidkitinberg@gmail.com
 
+
 #include "Graph.h"
 #include <stdexcept>
 #include <iostream>
-
 
 
 namespace graph {
@@ -16,7 +16,7 @@ Graph::Graph(int numVertices) : numVertices(numVertices) {
     }
 
     // Construct the adjacencyList
-    // Allocation of adjacencyList with a finite Array size (as requested)
+    // Allocation of adjacencyList with a finite Array size
     adjacencyList = new EdgeNode*[numVertices];
     for (int i = 0; i < numVertices; ++i) {
         adjacencyList[i] = nullptr;
@@ -38,6 +38,7 @@ Graph::~Graph() {
     delete[] adjacencyList;
 }
 
+// Small helper method to check for bounds
 void Graph::validateVertex(int v) const {
     if (v < 0 || v >= numVertices)
     {
@@ -45,7 +46,7 @@ void Graph::validateVertex(int v) const {
     }
 }
 
-// Helper method that checks there is an existing edge between 2 vertices.
+// Helper method that checks if there is an existing edge between 2 vertices.
 bool Graph::edgeExists(int src, int dest) const {
     validateVertex(src);
     EdgeNode* current = adjacencyList[src];
@@ -85,39 +86,52 @@ void Graph::removeEdge(int src, int dest) {
 
     // Removing edge from src
     EdgeNode** current = &adjacencyList[src];
-    while (*current && (*current)->neighbor != dest) {
+    while (*current && (*current)->neighbor != dest) 
+    {
         current = &((*current)->next);
     }
-    if (*current == nullptr) {
+    if (*current == nullptr) 
+    {
         throw std::runtime_error("Edge does not exist");
     }
     EdgeNode* toDelete = *current;
     *current = toDelete->next;
-    delete toDelete;
+    delete toDelete; // Free memory
 
     // Removing edge from dest
     current = &adjacencyList[dest];
-    while (*current && (*current)->neighbor != src) {
+    while (*current && (*current)->neighbor != src) 
+    {
         current = &((*current)->next);
     }
-    if (*current) {
+    if (*current) 
+    {
         toDelete = *current;
         *current = toDelete->next;
         delete toDelete;
     }
 }
 
-void Graph::print_graph() const {
-    for (int i = 0; i < numVertices; ++i) {
-        std::cout << i << ": ";
+void Graph::print_graph(const std::string& label) const {
+    std::cout << "=== Graph Adjacency List for " << label << " ===" << std::endl;
+    for (int i = 0; i < numVertices; ++i) 
+    {
+        std::cout << "Vertex " << i << " --> ";
         EdgeNode* current = adjacencyList[i];
-        while (current) {
-            std::cout << "(" << current->neighbor << ", w=" << current->weight << ") ";
+
+        bool first = true;
+        while (current) 
+        {
+            if (!first) std::cout << ", ";
+            std::cout << "(to: " << current->neighbor << ", weight: " << current->weight << ")";
             current = current->next;
+            first = false;
         }
         std::cout << std::endl;
     }
 }
+
+// Getters
 
 int Graph::getNumVertices() const {
     return numVertices;

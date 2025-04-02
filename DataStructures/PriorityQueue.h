@@ -5,6 +5,7 @@
 #define PRIORITY_QUEUE_H
 #include <iostream>
 #include <climits>
+#include <cstdlib>
 
 namespace ds {
 

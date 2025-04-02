@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
@@ -28,7 +29,8 @@ namespace graph {
 
         void addEdge(int src, int dest, int weight = 1);
         void removeEdge(int src, int dest);
-        void print_graph() const;
+        void print_graph(const std::string& label) const;
+
 
         // Getters for BFS and other algorithms
         int getNumVertices() const;
@@ -39,4 +41,4 @@ namespace graph {
 
 }
 
-#endif // GRAPH_HPP
+#endif

@@ -18,6 +18,7 @@ Graph Dijkstra::buildDijkstraTree(const Graph& g, int source) {
         throw std::invalid_argument("Source vertex out of range.");
     }
 
+    // Memory allocation for the dijkstra algorithm
     int* distance = new int[numVertices];
     int* parent = new int[numVertices];
     PriorityQueue pq(numVertices);
@@ -28,21 +29,23 @@ Graph Dijkstra::buildDijkstraTree(const Graph& g, int source) {
         parent[i] = -1;
     }
 
-    // Source vertec initialization and insertion to pq
+    // Source vertex initialization and insertion to pq
     distance[source] = 0;
     pq.insert(source, 0);
 
-    while (!pq.isEmpty()) {
+    while (!pq.isEmpty()) 
+    {
         int currentVertex = pq.extractMin();
 
         // Get the linked list (all the neighbors) for current vertex
-        const Graph::EdgeNode* neighbor = g.getAdjacencyList()[currentVertex];
-        while (neighbor) { // loop through all neighbors
-            int neighborVertex = neighbor->neighbor; // neighbor node index (ID)
-            int edgeWeight = neighbor->weight; // Weight of the edge from current to neighbor
+        const Graph::EdgeNode* neighbor_list = g.getAdjacencyList()[currentVertex];
+        while (neighbor_list) { // loop through all neighbors
+            int neighborVertex = neighbor_list->neighbor; // neighbor node index (ID)
+            int edgeWeight = neighbor_list->weight; // Weight of the edge from current to neighbor
 
-            if (pq.contains(neighborVertex) == false) { // If the pq don't have this vertex we insert it with its dist
-                pq.insert(neighborVertex, distance[neighborVertex]);
+            if (edgeWeight < 0) // Exception on negetive edges
+            {
+                throw std::invalid_argument("Dijkstra does not work on negetive edge weights.");
             }
 
             // this is the relax procedure in the algorithm
@@ -50,23 +53,51 @@ Graph Dijkstra::buildDijkstraTree(const Graph& g, int source) {
             { 
                 distance[neighborVertex] = distance[currentVertex] + edgeWeight; // Update the dist --> relax
                 parent[neighborVertex] = currentVertex; // Update parent
-                pq.decreaseKey(neighborVertex, distance[neighborVertex]); // Update the dist in pq
+
+                if (pq.contains(neighborVertex)) 
+                {
+                    pq.decreaseKey(neighborVertex, distance[neighborVertex]); // Update the dist in pq
+                } 
+                else 
+                {
+                    pq.insert(neighborVertex, distance[neighborVertex]); // Insert with correct value
+                }
             }
 
-            neighbor = neighbor->next; // Go to next neighbor of u
+            neighbor_list = neighbor_list->next; // Go to next neighbor of u
         }
     }
 
-    // Build the shortest-path tree
+    // Build the shortest-path tree from Dijkstra
     Graph tree(numVertices);
-    for (int vertex = 0; vertex < numVertices; ++vertex) {
-        if (parent[vertex] != -1) {
+    for (int vertex = 0; vertex < numVertices; ++vertex) 
+    {
+        if (parent[vertex] != -1) // Check if vertex has a valid parent
+        {
             int parentVertex = parent[vertex];
-            int edgeWeight = distance[vertex] - distance[parentVertex];  // Calculate actual weight from parent to child
-            tree.addEdge(parentVertex, vertex, edgeWeight);  // You can call it only once because tree is undirected
+
+            // Find the real weight from parentVertex to vertex in the original graph
+            const Graph::EdgeNode* neighbor_list2 = g.getAdjacencyList()[parentVertex];
+            int realWeight = -1;
+            while (neighbor_list2) // Go through all neighbors
+            {
+                if (neighbor_list2->neighbor == vertex) 
+                {
+                    realWeight = neighbor_list2->weight;
+                    break;
+                }
+                neighbor_list2 = neighbor_list2->next;
+            }
+
+            if (realWeight == -1) {
+                throw std::runtime_error("Edge not found in original graph");
+            }
+
+            tree.addEdge(parentVertex, vertex, realWeight);
         }
     }
 
+    // Free memory
     delete[] distance;
     delete[] parent;
 

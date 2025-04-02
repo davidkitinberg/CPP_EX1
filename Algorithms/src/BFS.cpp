@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #include "../header/BFS.h"
 #include "../../DataStructures/Queue.h"
 #include <stdexcept>
@@ -9,9 +10,9 @@ using namespace ds;
 
 namespace algo {
 
-    int* BFS::buildBFSTree(const Graph& g, int source) {
+    Graph BFS::buildBFSTree(const Graph& g, int source) {
         // Get number of vertices
-        int numVertices = g.getNumVertices();  // ← we'll need to expose this method in your Graph class!
+        int numVertices = g.getNumVertices();
 
         // Validate the source vertex
         if (source < 0 || source >= numVertices) {
@@ -40,10 +41,12 @@ namespace algo {
 
             // Traverse neighbors using the Graph's adjacency list
             const Graph::EdgeNode* neighbor = g.getAdjacencyList()[current];
-            while (neighbor != nullptr) {
+            while (neighbor != nullptr) // Visit all neighbors of the current Node
+            {
                 int v = neighbor->neighbor;
 
-                if (!visited[v]) {
+                if (!visited[v]) 
+                {
                     visited[v] = true;
                     parent[v] = current;
                     q.enqueue(v);
@@ -53,8 +56,19 @@ namespace algo {
             }
         }
 
+        // Construct the BFS tree as a new Graph
+        Graph tree(numVertices);
+        for (int i = 0; i < numVertices; ++i) {
+            if (parent[i] != -1) {
+                tree.addEdge(parent[i], i, 1); // Default weight of 1
+            }
+        }
+
+        // Free memory
         delete[] visited;
-        return parent;  // The caller must delete[] it
+        delete[] parent;
+
+        return tree;
     }
 
 }
