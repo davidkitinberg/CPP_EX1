@@ -32,7 +32,7 @@ namespace algo {
 
         // Validate the source vertex
         if (source < 0 || source >= numVertices) {
-            throw std::invalid_argument("Source vertex out of range.");
+            throw std::invalid_argument("Source vertex out of range");
         }
 
         // Allocate and initialize arrays

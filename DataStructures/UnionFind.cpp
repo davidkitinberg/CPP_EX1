@@ -26,7 +26,7 @@ UnionFind::~UnionFind() {
 // Find operation with path compression
 int UnionFind::find(int u) {
     if (u < 0 || u >= size) {
-        throw std::out_of_range("Index out of range in find()");
+        throw std::out_of_range("Index out of range");
     }
 
     // If we did not find the root, recursively find the root and compress the path

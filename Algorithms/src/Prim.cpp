@@ -16,7 +16,7 @@ Graph Prim::buildMST(const Graph& g, int startVertex) {
 
     // Check bounds of startVertex
     if (startVertex < 0 || startVertex >= n) {
-        throw std::invalid_argument("Invalid start vertex.");
+        throw std::invalid_argument("Invalid start vertex");
     }
 
     // Initialize helper arrays

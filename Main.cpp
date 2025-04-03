@@ -1,5 +1,6 @@
 // davidkitinberg@gmail.com
 
+
 #include <iostream>
 #include "Graph/Graph.h"
 #include "Algorithms/header/BFS.h"
@@ -35,31 +36,31 @@ int main() {
     originalGraph.print_graph("Original graph");
     printf("\n");
 
-    // Run BFS
+    // BFS
     Graph bfsInput = buildSampleGraph();
     Graph bfsTree = BFS::buildBFSTree(bfsInput, source);
     bfsTree.print_graph("BFS");
     printf("\n");
 
-    // Run DFS
+    // DFS
     Graph dfsInput = buildSampleGraph();
     Graph dfsTree = DFS::buildDFSTree(dfsInput, source);
     dfsTree.print_graph("DFS");
     printf("\n");
 
-    // Run Dijkstra
+    // Dijkstra
     Graph dijkstraInput = buildSampleGraph();
     Graph dijkstraTree = Dijkstra::buildDijkstraTree(dijkstraInput, source);
     dijkstraTree.print_graph("Dijkstra");
     printf("\n");
 
-    // Run Kruskal
+    // Kruskal
     Graph kruskalInput = buildSampleGraph();
     Graph kruskalTree = Kruskal::buildMST(kruskalInput);
     kruskalTree.print_graph("Kruskal");
     printf("\n");
 
-    // Run Prim
+    // Prim
     Graph primInput = buildSampleGraph();
     Graph primTree = Prim::buildMST(primInput);
     primTree.print_graph("Prim");

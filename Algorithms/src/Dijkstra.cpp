@@ -15,7 +15,7 @@ Graph Dijkstra::buildDijkstraTree(const Graph& g, int source) {
 
     // Check bounds
     if (source < 0 || source >= numVertices) {
-        throw std::invalid_argument("Source vertex out of range.");
+        throw std::invalid_argument("Source vertex out of range");
     }
 
     // Memory allocation for the dijkstra algorithm
@@ -45,7 +45,7 @@ Graph Dijkstra::buildDijkstraTree(const Graph& g, int source) {
 
             if (edgeWeight < 0) // Exception on negetive edges
             {
-                throw std::invalid_argument("Dijkstra does not work on negetive edge weights.");
+                throw std::invalid_argument("Dijkstra does not work on negetive edge weights");
             }
 
             // this is the relax procedure in the algorithm
